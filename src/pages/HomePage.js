@@ -1,11 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
 import { useState } from 'react';
+import './HomePage.css'
 // <p><Link to="/598">598 Link</Link></p>
 
 export default function HomePage() {
   return (
-    <div className="Container">
+    <div className="HomePage">
       <ViewSection />
       <CreateSection />
     </div>
@@ -33,58 +34,53 @@ function CreateSection () {
 }
 
 function PageHeader() {
-  return (<h1>Your List:</h1>);
+  return (<h1 className="PageHeader">Your List:</h1>);
 }
   
 function ListParent({ items }) {
   // map item data into html columns
-  let cols = items.map(item =>
-    <ListItem title={item.title} description={item.description} done={item.done} />
+  let mapped_items = items.map(item =>
+    <ListItem title={item.title} description={item.description} done={item.done}/>
   );
   return (
     <>
-      <table>
-        <colgroup>
-          {cols}
-        </colgroup>
-      </table>
+      <div className="ListParent">{mapped_items}</div>
     </>
   );
 }
 
 function ListItem({ title, description, done }) {
+  let string = done === true ? "Completed" : "TO DO";
   return (
-    <col>
-      <text>{title}</text>
-      <text>{description}</text>
-      <text>{done}</text>
-    </col>
+    <div className="ListItem">
+      <text>{title}<br></br>{description}<br></br>{string}<br></br></text>
+    </div>
   );
 }
   
 function CurrItemBox({ currTitle }) {
-  return (<text>Current Item: {currTitle}</text>);
+  return (<div className="CurrItemBox">Current Item: {currTitle}</div>);
 }
   
 function ActionList() {
   return (
-    <>
+    <div className="ActionList">
       <ul>
-        <li>mark as done <button></button></li>
-        <li>update description <input type="text" id="name"></input> <button></button></li>
-        <li>mark as done <button></button></li>
+        <li><button className="Button">mark as done</button></li>
+        <li><button className="Button">update description</button><input type="text" id="name"></input></li>
+        <li><button className="Button">mark as done</button></li>
       </ul>
-    </>  
+    </div>  
   );
 }
   
 function NewItemBox () {
-  return (<h1>New Item: </h1>);
+  return (<h1 className="NewItemBox">New Item: </h1>);
 }
   
 function NewItemForm () {
   return (
-    <form>
+    <form className="NewItemForm">
       <ul>
         <li>title <input type="text" id="title"></input></li>
         <li>description <input type="text" id="desc"></input></li>
