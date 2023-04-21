@@ -55,14 +55,14 @@ function ListParent({ items }) {
 function ListItem({ title, description, done }) {
   return (
     <col>
-      <text>title</text>
-      <text>description</text>
-      <text>done</text>
+      <text>{title}</text>
+      <text>{description}</text>
+      <text>{done}</text>
     </col>
   );
 }
   
-function CurrItembox({ currTitle }) {
+function CurrItemBox({ currTitle }) {
   return (<text>Current Item: {currTitle}</text>);
 }
   
