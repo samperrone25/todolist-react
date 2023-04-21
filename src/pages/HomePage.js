@@ -39,6 +39,12 @@ export default function HomePage() {
     );
   }
   
+  function viewSection() {
+
+  }
+  function createSection () {
+    
+  }
   function pageHeader() {
       return (<h1>Your List:</h1>);
   }
