@@ -5,41 +5,41 @@ import { useState } from 'react';
 
 export default function HomePage() {
   return (
-    <div className="container">
-      <viewSection />
-      <createSection />
+    <div className="Container">
+      <ViewSection />
+      <CreateSection />
     </div>
   );
 }
   
-function viewSection() {
+function ViewSection() {
   return (
-    <div className="viewSection">
-      <pageHeader />
-      <listParent items={ITEMS} />
-      <currItemBox currItem="Jimmy" />
-      <actionList />
+    <div className="ViewSection">
+      <PageHeader />
+      <ListParent items={ITEMS} />
+      <CurrItemBox currItem="Jimmy" />
+      <ActionList />
     </div>
   );
 }
 
-function createSection () {
+function CreateSection () {
   return (
-    <div classname="createSection">
-      <newItemBox />
-      <newItemForm />
+    <div classname="CreateSection">
+      <NewItemBox />
+      <NewItemForm />
     </div>
   );
 }
 
-function pageHeader() {
+function PageHeader() {
   return (<h1>Your List:</h1>);
 }
   
-function listParent({ items }) {
+function ListParent({ items }) {
   // map item data into html columns
   let cols = items.map(item =>
-    <listItem title={item.title} description={item.description} done={item.done} />
+    <ListItem title={item.title} description={item.description} done={item.done} />
   );
   return (
     <>
@@ -52,7 +52,7 @@ function listParent({ items }) {
   );
 }
 
-function listItem({ title, description, done }) {
+function ListItem({ title, description, done }) {
   return (
     <col>
       <text>title</text>
@@ -62,11 +62,11 @@ function listItem({ title, description, done }) {
   );
 }
   
-function currItembox({ currTitle }) {
+function CurrItembox({ currTitle }) {
   return (<text>Current Item: {currTitle}</text>);
 }
   
-function actionList() {
+function ActionList() {
   return (
     <>
       <ul>
@@ -78,11 +78,11 @@ function actionList() {
   );
 }
   
-function newItemBox () {
+function NewItemBox () {
   return (<h1>New Item: </h1>);
 }
   
-function newItemForm () {
+function NewItemForm () {
   return (
     <form>
       <ul>
