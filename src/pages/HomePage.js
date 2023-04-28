@@ -14,19 +14,23 @@ export default function HomePage() {
 }
   
 function ViewSection() {
+  const [currItem, setcurrItem] = useState(0); // begin with first item id (i.e. 1)
+  const [items, setItems] = useState(ITEMS); // obtain from api
+  let currTitle = ITEMS[currItem].title; // STORING CURRENT TITLE
+
   return (
     <div className="ViewSection">
       <PageHeader />
-      <ListParent items={ITEMS} />
-      <CurrItemBox currItem="Jimmy" />
-      <ActionList />
+      <ListParent items={items} currItem={currItem} setcurrItem={setcurrItem}/>
+      <CurrItemBox currTitle={currTitle}/>
+      <ActionList setItems={setItems} currItem={currItem} setcurrItem={setcurrItem}/>
     </div>
   );
 }
 
 function CreateSection () {
   return (
-    <div classname="CreateSection">
+    <div className="CreateSection">
       <NewItemBox />
       <NewItemForm />
     </div>
@@ -37,10 +41,15 @@ function PageHeader() {
   return (<h1 className="PageHeader">Your List:</h1>);
 }
   
-function ListParent({ items }) {
+function ListParent({ items, currItem, setcurrItem }) {
   // map item data into html columns
   let mapped_items = items.map(item =>
-    <ListItem title={item.title} description={item.description} done={item.done}/>
+    (item.title == items[currItem].title ? (
+        <ListItem key={item.id} item={item} active={true} setcurrItem={setcurrItem} />
+    ) : ( // need unique key, can probably change once API is connected as id's will be handled by PGSQL DB
+        <ListItem key={item.id} item={item} active={false} setcurrItem={setcurrItem} /> 
+        // pass active property and changeCurrentItem function
+    ))
   );
   return (
     <>
@@ -49,11 +58,20 @@ function ListParent({ items }) {
   );
 }
 
-function ListItem({ title, description, done }) {
-  let string = done === true ? "Completed" : "TO DO";
-  return (
-    <div className="ListItem">
-      <text>{title}<br></br>{description}<br></br>{string}<br></br></text>
+function ListItem({ item, active, setcurrItem }) {
+
+  function handleClick() {
+    setcurrItem(item.id);
+  }
+
+  let string = item.done === true ? "Completed" : "TO DO";
+  return (active === false ?
+    <div className="ListItem" onClick={handleClick}>
+      {item.title}<br></br>{item.description}<br></br>{string}<br></br>
+    </div>
+    :
+    <div className="ActiveListItem" onClick={handleClick}>
+      {item.title}<br></br>{item.description}<br></br>{string}<br></br>
     </div>
   );
 }
@@ -62,36 +80,65 @@ function CurrItemBox({ currTitle }) {
   return (<div className="CurrItemBox">Current Item: {currTitle}</div>);
 }
   
-function ActionList() {
+function ActionList({ setItems, currItem, setcurrItem }) {
+  
+  function handleDone() {
+    // call mark as done in api
+    // re retrieve items and display them
+    
+    // dummy implementation
+    // update ITEMS[currItem].done to true
+    // re render?
+    ITEMS[currItem].done = true;
+    setcurrItem(currItem);
+    setItems(ITEMS);
+  }
+  function handleUpdate() { 
+    // call update description in api
+    // re retrieve items and display them
+
+    // dummy implementation
+    // update ITEMS[currItem].description to input
+    // re render?
+  }
+  function handleDelete() {
+    // call delete item in api
+    // re retrieve items and display them
+
+    // dummy implementation
+    // delete ITEMS[currItem]
+    // decrement currItem IF it is larger than len(ITEMS)-1 to avoid index err
+    // re render?
+  }
   return (
     <div className="ActionList">
       <ul>
-        <li><button className="Button">mark as done</button></li>
-        <li><button className="Button">update description</button><input type="text" id="name"></input></li>
-        <li><button className="Button">mark as done</button></li>
+        <li key={1}><button className="Button" onClick={handleDone}>mark as done</button></li>
+        <li key={2}><button className="Button" onClick={handleUpdate}>update description</button><input type="text" id="name"></input></li>
+        <li key={3}><button className="Button" onClick={handleDelete}>delete item</button></li>
       </ul>
     </div>  
   );
 }
   
 function NewItemBox () {
-  return (<h1 className="NewItemBox">New Item: </h1>);
+  return (<div className="NewItemBox">New Item: </div>);
 }
   
 function NewItemForm () {
   return (
     <form className="NewItemForm">
       <ul>
-        <li>title <input type="text" id="title"></input></li>
-        <li>description <input type="text" id="desc"></input></li>
+        <li key={1}>title <input type="text" id="title"></input></li>
+        <li key={2}>description <input type="text" id="desc"></input></li>
       </ul>
       <button>Create</button>
     </form>
   );
 }
   
-const ITEMS = [
-  {id: 1, title: "bins", description: "take them out", done: false, timestamp: 1213151516},
-  {id: 2, title: "car", description: "clean", done: true, timestamp: 1213151517},
-  {id: 3, title: "room", description: "tidy", done: false, timestamp: 1213151518},
+let ITEMS = [
+  {id: 0, title: "bins", description: "take them out", done: false, timestamp: 1213151516},
+  {id: 1, title: "car", description: "clean", done: true, timestamp: 1213151517},
+  {id: 2, title: "room", description: "tidy", done: false, timestamp: 1213151518},
 ];
